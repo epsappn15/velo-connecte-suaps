@@ -1,4 +1,4 @@
-SUAPS POITIERS – VELO CONNECTE – V1.8
+SUAPS POITIERS – VELO CONNECTE – V1.9
 
 Cette version ajoute les icones de marque pour le navigateur et l'ecran d'accueil, ainsi que le manifeste d'application web.
 

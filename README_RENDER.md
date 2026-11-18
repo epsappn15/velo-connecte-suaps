@@ -12,4 +12,4 @@ Utiliser une base Turso distincte de l'application course d'orientation. Les tab
 V1.4 : lors de la création d’un cours, l’enseignant renseigne la durée, le nom de la séance et le circuit. Ces informations sont visibles par l’étudiant après sélection du cours ou lecture du QR code, afin de configurer sa tablette. Les champs sont ajoutés à la table des cours par migration automatique et non destructive.
 
 
-V1.8 : remplacement du logo Zwift par le logo dédié « Vélo connecté », avec conservation du logo SUAPS côte à côte dans l’en-tête.
+V1.9 : remplacement du logo Zwift par le logo dédié « Vélo connecté », avec conservation du logo SUAPS côte à côte dans l’en-tête.
