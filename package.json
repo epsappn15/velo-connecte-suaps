@@ -1,1 +1,1 @@
-{"name":"suaps-velo-connecte","version":"1.0.0","private":true,"scripts":{"start":"node server.js"},"engines":{"node":">=20"},"dependencies":{"@libsql/client":"^0.15.15","bcryptjs":"^2.4.3","express":"^4.21.2","qrcode":"^1.5.4"}}
+{"name":"suaps-velo-connecte","version":"1.1.0","private":true,"scripts":{"start":"node server.js"},"engines":{"node":">=20"},"dependencies":{"@libsql/client":"^0.15.15","bcryptjs":"^2.4.3","express":"^4.21.2","qrcode":"^1.5.4"}}

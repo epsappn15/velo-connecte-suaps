@@ -1,44 +1,25 @@
-SUAPS POITIERS – VELO CONNECTE – V1
-==================================
+SUAPS POITIERS – VELO CONNECTE – V1.1
+====================================
 
-Application indépendante de suivi manuel des cours de vélo connecté (Zwift / home trainers).
-Aucune connexion à Zwift, aucune API, aucun import FIT : les informations sont saisies par les étudiants et consultées par l'enseignant.
+Correctif ciblé de navigation de la V1 : navigation principale étudiant/enseignant plus robuste, états accessibles (aria-selected), navigation clavier et adaptation mobile avec onglets visibles. Le parcours QR ouvre explicitement l'espace étudiant.
 
-FONCTIONNALITES V1
-- Création d'un carnet étudiant sans roster, par prénom/nom et code personnel.
-- Connexion au carnet avec le code personnel.
-- Saisie étudiante de chaque séance : date, FTP en watts (facultatif à chaque séance), nom/type d'activité (séance, parcours ou col), distance, circuit, vélo/home trainer, sensations de 1 à 5 et commentaire.
-- Historique individuel, distance cumulée et consultation des observations enseignantes.
-- Espace enseignant protégé par mot de passe.
-- Création et clôture des cours SUAPS, QR code d'accès à un cours.
-- Tableau de bord des séances saisies, filtres par cours, observations pédagogiques et export CSV.
-- Base Turso via @libsql/client.
+FONCTIONNALITES CONSERVEES
+- Carnet étudiant sans roster, code personnel.
+- Saisie manuelle des séances et FTP facultatif à chaque séance.
+- Distance, activité/parcours/col, circuit, vélo/home trainer, sensations 1 à 5 et commentaire.
+- Historique étudiant et observations enseignant.
+- Espace enseignant, gestion des cours, QR codes, tableau de bord et export CSV.
+- Aucune récupération automatique des données Zwift.
 
-DEPLOIEMENT RENDER
-1. Créer une nouvelle base Turso dédiée à cette application (ne pas réutiliser la base de course d'orientation).
-2. Créer un nouveau dépôt GitHub et y déposer le contenu de cette archive.
-3. Créer un nouveau Web Service Render depuis ce dépôt.
-4. Build command : npm install ; Start command : npm start ; Health check : /health.
-5. Variables d'environnement obligatoires :
-   TURSO_DATABASE_URL = URL de la nouvelle base
-   TURSO_AUTH_TOKEN = token de la nouvelle base
-   ADMIN_USER = identifiant enseignant (ex. enseignant)
-   ADMIN_PASSWORD = mot de passe enseignant robuste
-   SESSION_SECRET = secret aléatoire long
-   PUBLIC_URL = URL publique Render, utile pour les QR codes
-6. Node.js 22 recommandé. La première exécution crée automatiquement les tables.
+MISE A JOUR RENDER
+1. Sauvegarder le dépôt et la base Turso.
+2. Remplacer les fichiers du dépôt par le contenu de cette archive.
+3. Conserver les variables Render existantes : TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, ADMIN_USER, ADMIN_PASSWORD, SESSION_SECRET et PUBLIC_URL.
+4. Déployer la branche main.
+5. Tester les deux onglets sur ordinateur et mobile, puis création/connexion d'un carnet et connexion enseignant.
 
-IMPORTANT
-- L'application ne récupère aucune donnée depuis Zwift.
-- Le FTP est saisi à chaque séance quand il est connu ; une valeur vide reste autorisée.
-- Les sensations sont une auto-évaluation de 1 (très difficile) à 5 (très facile), et non une mesure physiologique.
-- Les codes étudiants sont secrets : l'application ne stocke que leur empreinte SHA-256. Un code perdu ne peut pas être récupéré dans cette V1 ; il faut prévoir une procédure de réinitialisation administrateur dans une version ultérieure.
-- Prévoir une sauvegarde régulière de Turso et respecter les règles de protection des données de l'établissement.
-- Le code enseignant initial est celui défini par ADMIN_USER / ADMIN_PASSWORD au premier démarrage. Modifier impérativement le mot de passe par défaut.
-
-VERIFICATIONS REALISEES
-- node --check server.js
-- node --check du JavaScript intégré à public/index.html
-- Vérification de l'intégrité de l'archive ZIP.
-
-Non testé sur une instance Render/Turso réelle. Faire un test complet après déploiement avant utilisation avec des étudiants.
+VERIFICATIONS
+- Syntaxe Node.js contrôlée.
+- Syntaxe JavaScript intégré à la page contrôlée.
+- Intégrité ZIP contrôlée.
+- Le parcours réel sur Render/Turso n'a pas été exécuté depuis cet environnement.
