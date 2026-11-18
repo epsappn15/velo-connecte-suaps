@@ -1,39 +1,7 @@
-SUAPS POITIERS – VELO CONNECTE – V1.3
-====================================
+SUAPS POITIERS – VÉLO CONNECTÉ – V1.5
 
-CORRECTIF CONNEXION ENSEIGNANT + IDENTITE VISUELLE SUAPS
-- Intégration du logo officiel SUAPS fourni.
-- Nouvelle charte bordeaux / rouge / blanc avec accent doré, cohérente avec le logo.
-- Connexion enseignant transformée en vrai formulaire (validation par Entrée, champs autocomplete, état de chargement et message d'erreur visible).
-- Authentification : les variables Render ADMIN_USER et ADMIN_PASSWORD sont désormais prioritaires. Cela corrige notamment le cas où un ancien hash du mot de passe reste enregistré dans la table settings après une modification de variable d'environnement.
-- Si ADMIN_PASSWORD n'est pas défini, le serveur conserve la compatibilité avec le hash initial stocké en base.
+Nouveautés : activité Challenge, échelle sensations inversée (1 facile à 5 très difficile) avec étoiles, créneaux SUAPS programmés, QR code affiché dans la fiche du cours, logo Zwift, consignes de sécurité et hygiène, remise à zéro administrateur des données, indicateurs distinguant les carnets créés des étudiants ayant réellement réalisé une séance.
 
-INSTALLATION
-1. Sauvegarder le dépôt et la base Turso.
-2. Remplacer les fichiers du dépôt par le contenu de cette archive.
-3. Dans Render > Environment, vérifier ADMIN_USER (par défaut : enseignant) et définir ADMIN_PASSWORD avec le mot de passe souhaité.
-4. Conserver TURSO_DATABASE_URL, TURSO_AUTH_TOKEN et SESSION_SECRET.
-5. Déployer la branche main.
-6. Après déploiement, saisir exactement ADMIN_USER et ADMIN_PASSWORD tels qu'ils apparaissent dans Render. Ne pas ajouter d'espaces avant/après le mot de passe.
+La remise à zéro supprime définitivement les étudiants, cours, séances, tests FTP et observations. Elle nécessite une double confirmation dans l’interface enseignant.
 
-Aucune table existante n'est supprimée ou modifiée par ce correctif. Le logo est servi depuis public/logo-suaps.png.
-
-VERIFICATIONS
-- Syntaxe Node.js contrôlée.
-- Syntaxe JavaScript client contrôlée.
-- Intégrité ZIP contrôlée.
-- Le parcours réel n'a pas été exécuté sur le service Render de l'utilisateur.
-
-
-V1.3 – Ajustements demandés
-- Code personnel affiché dans un panneau visible après création, avec copie et impression.
-- Libellé enseignant : « Créneau (Jour-Horaire) ».
-- Type de vélo : Vélo de course ou VTC ; home trainer conservé dans un champ distinct.
-- Nouvel onglet étudiant « Mes tests FTP » avec date, FTP en watts et commentaire facultatif.
-- Historique des tests FTP consultable par l'étudiant et dans le tableau de bord enseignant.
-- Migration Turso non destructive : création de ftp_tests et ajout de bike_type à rides.
-
-Après déploiement, la migration de la base s'effectue automatiquement au démarrage. Conserver les variables d'environnement Render existantes.
-
-
-V1.4 : lors de la création d’un cours, l’enseignant renseigne la durée, le nom de la séance et le circuit. Ces informations sont visibles par l’étudiant après sélection du cours ou lecture du QR code, afin de configurer sa tablette. Les champs sont ajoutés à la table des cours par migration automatique et non destructive.
+Conserver les variables Render : TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, ADMIN_USER, ADMIN_PASSWORD, SESSION_SECRET et PUBLIC_URL. Déploiement sur la base Turso existante : aucune table n’est supprimée lors d’une mise à jour.
