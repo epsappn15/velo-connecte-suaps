@@ -1,4 +1,4 @@
-SUAPS POITIERS – VÉLO CONNECTÉ – V1.6
+SUAPS POITIERS – VÉLO CONNECTÉ – V1.7
 
 Nouveautés : activité Challenge, échelle sensations inversée (1 facile à 5 très difficile) avec étoiles, créneaux SUAPS programmés, QR code affiché dans la fiche du cours, logo Zwift, consignes de sécurité et hygiène, remise à zéro administrateur des données, indicateurs distinguant les carnets créés des étudiants ayant réellement réalisé une séance.
 
@@ -7,4 +7,7 @@ La remise à zéro supprime définitivement les étudiants, cours, séances, tes
 Conserver les variables Render : TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, ADMIN_USER, ADMIN_PASSWORD, SESSION_SECRET et PUBLIC_URL. Déploiement sur la base Turso existante : aucune table n’est supprimée lors d’une mise à jour.
 
 
-V1.6 : consignes déplacées en tête de l’espace étudiant ; liste des créneaux SUAPS dans le formulaire étudiant en plus de la séance personnelle ; sélection des sensations par étoiles (1 facile à 5 très difficile). Les créneaux sélectionnés sont conservés dans l’historique via le champ session_label. Migration SQL automatique et compatible avec les bases existantes.
+V1.7 : consignes déplacées en tête de l’espace étudiant ; liste des créneaux SUAPS dans le formulaire étudiant en plus de la séance personnelle ; sélection des sensations par étoiles (1 facile à 5 très difficile). Les créneaux sélectionnés sont conservés dans l’historique via le champ session_label. Migration SQL automatique et compatible avec les bases existantes.
+
+
+V1.7 : remplacement du logo Zwift par le logo dédié « Vélo connecté », avec conservation du logo SUAPS côte à côte dans l’en-tête.
