@@ -23,8 +23,22 @@ const valid=t=>{try{const [p,s]=String(t||'').split('.');if(!p||sign(p)!==s)retu
 const auth=q=>String(q.headers.authorization||'').replace(/^Bearer\s+/,'');const admin=(q,r,n)=>valid(auth(q))?n():r.status(401).json({error:'Authentification enseignant requise'});
 const student=async q=>{const h=String(q.headers.authorization||'');if(!h.startsWith('Student '))return null;return one('SELECT id,first_name,last_name,class_name FROM students WHERE code_hash=?',[hash(h.slice(8))])};
 app.use(express.static(path.join(__dirname,'public'),{setHeaders:(r,f)=>{if(/index.html|sw.js/.test(f))r.setHeader('Cache-Control','no-store')}}));
-app.get('/health',(q,r)=>r.json({ok:true,version:'V1.1',service:'SUAPS Poitiers – Vélo connecté'}));app.get('/api/version',(q,r)=>r.json({version:'V1.1'}));
-app.post('/api/admin/login',async(q,r)=>{const u=clean(q.body?.username,80),p=String(q.body?.password||''),su=await one('SELECT value FROM settings WHERE key=?',['admin_user']),sp=await one('SELECT value FROM settings WHERE key=?',['admin_hash']);if(u!==(su?.value||'')||!bcrypt.compareSync(p,sp?.value||''))return r.status(401).json({error:'Identifiants incorrects'});r.json({token:token()})});
+app.get('/health',(q,r)=>r.json({ok:true,version:'V1.2',service:'SUAPS Poitiers – Vélo connecté'}));app.get('/api/version',(q,r)=>r.json({version:'V1.2'}));
+app.post('/api/admin/login',async(q,r)=>{
+ const username=clean(q.body?.username,80),password=String(q.body?.password??'');
+ const storedUser=await one('SELECT value FROM settings WHERE key=?',['admin_user']);
+ const storedHash=await one('SELECT value FROM settings WHERE key=?',['admin_hash']);
+ const expectedUser=process.env.ADMIN_USER||storedUser?.value||'enseignant';
+ let passwordOK=false;
+ if(process.env.ADMIN_PASSWORD){
+   const a=Buffer.from(password),b=Buffer.from(process.env.ADMIN_PASSWORD);
+   passwordOK=a.length===b.length&&crypto.timingSafeEqual(a,b);
+ }else if(storedHash?.value){
+   passwordOK=bcrypt.compareSync(password,storedHash.value);
+ }
+ if(username!==expectedUser||!passwordOK)return r.status(401).json({error:'Identifiant ou mot de passe incorrect. Vérifie ADMIN_USER et ADMIN_PASSWORD dans Render > Environment.'});
+ return r.json({token:token()});
+});
 app.post('/api/student/create',async(q,r)=>{const first=clean(q.body?.first_name,80),last=clean(q.body?.last_name,80),cls=clean(q.body?.class_name,80);if(!first||!last)return r.status(400).json({error:'Prénom et nom obligatoires'});const code=crypto.randomBytes(5).toString('hex').toUpperCase(),id=uid();await run('INSERT INTO students(id,first_name,last_name,class_name,code_hash,created_at) VALUES(?,?,?,?,?,?)',[id,first,last,cls,hash(code),Date.now()]);r.status(201).json({student:{id,first_name:first,last_name:last,class_name:cls},access_code:code})});
 app.post('/api/student/login',async(q,r)=>{const code=clean(q.body?.code,30).toUpperCase(),s=await one('SELECT id,first_name,last_name,class_name FROM students WHERE code_hash=?',[hash(code)]);if(!s)return r.status(404).json({error:'Code personnel inconnu'});r.json({student:s})});
 app.get('/api/student/me',async(q,r)=>{const s=await student(q);if(!s)return r.status(401).json({error:'Code personnel invalide'});const rides=await all('SELECT r.*,cs.title AS session_title FROM rides r LEFT JOIN classes_sessions cs ON cs.id=r.session_id WHERE r.student_id=? ORDER BY r.ride_date DESC,r.created_at DESC',[s.id]);const notes=await all('SELECT n.*,r.student_id FROM teacher_notes n JOIN rides r ON r.id=n.ride_id WHERE r.student_id=? ORDER BY n.created_at DESC',[s.id]);r.setHeader('Cache-Control','no-store');r.json({student:s,rides,notes})});

@@ -1,25 +1,25 @@
-SUAPS POITIERS – VELO CONNECTE – V1.1
+SUAPS POITIERS – VELO CONNECTE – V1.2
 ====================================
 
-Correctif ciblé de navigation de la V1 : navigation principale étudiant/enseignant plus robuste, états accessibles (aria-selected), navigation clavier et adaptation mobile avec onglets visibles. Le parcours QR ouvre explicitement l'espace étudiant.
+CORRECTIF CONNEXION ENSEIGNANT + IDENTITE VISUELLE SUAPS
+- Intégration du logo officiel SUAPS fourni.
+- Nouvelle charte bordeaux / rouge / blanc avec accent doré, cohérente avec le logo.
+- Connexion enseignant transformée en vrai formulaire (validation par Entrée, champs autocomplete, état de chargement et message d'erreur visible).
+- Authentification : les variables Render ADMIN_USER et ADMIN_PASSWORD sont désormais prioritaires. Cela corrige notamment le cas où un ancien hash du mot de passe reste enregistré dans la table settings après une modification de variable d'environnement.
+- Si ADMIN_PASSWORD n'est pas défini, le serveur conserve la compatibilité avec le hash initial stocké en base.
 
-FONCTIONNALITES CONSERVEES
-- Carnet étudiant sans roster, code personnel.
-- Saisie manuelle des séances et FTP facultatif à chaque séance.
-- Distance, activité/parcours/col, circuit, vélo/home trainer, sensations 1 à 5 et commentaire.
-- Historique étudiant et observations enseignant.
-- Espace enseignant, gestion des cours, QR codes, tableau de bord et export CSV.
-- Aucune récupération automatique des données Zwift.
-
-MISE A JOUR RENDER
+INSTALLATION
 1. Sauvegarder le dépôt et la base Turso.
 2. Remplacer les fichiers du dépôt par le contenu de cette archive.
-3. Conserver les variables Render existantes : TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, ADMIN_USER, ADMIN_PASSWORD, SESSION_SECRET et PUBLIC_URL.
-4. Déployer la branche main.
-5. Tester les deux onglets sur ordinateur et mobile, puis création/connexion d'un carnet et connexion enseignant.
+3. Dans Render > Environment, vérifier ADMIN_USER (par défaut : enseignant) et définir ADMIN_PASSWORD avec le mot de passe souhaité.
+4. Conserver TURSO_DATABASE_URL, TURSO_AUTH_TOKEN et SESSION_SECRET.
+5. Déployer la branche main.
+6. Après déploiement, saisir exactement ADMIN_USER et ADMIN_PASSWORD tels qu'ils apparaissent dans Render. Ne pas ajouter d'espaces avant/après le mot de passe.
+
+Aucune table existante n'est supprimée ou modifiée par ce correctif. Le logo est servi depuis public/logo-suaps.png.
 
 VERIFICATIONS
 - Syntaxe Node.js contrôlée.
-- Syntaxe JavaScript intégré à la page contrôlée.
+- Syntaxe JavaScript client contrôlée.
 - Intégrité ZIP contrôlée.
-- Le parcours réel sur Render/Turso n'a pas été exécuté depuis cet environnement.
+- Le parcours réel n'a pas été exécuté sur le service Render de l'utilisateur.
